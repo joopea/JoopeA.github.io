@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JoopeA SystemInfo API</title>
+</head>
+<body>
 <script>
         function fetchSysData() {
             var ip, os, location, useragent;
@@ -22,11 +30,32 @@
                         useragent: useragent,
                     };
 
-                    const returnJSON = JSON.stringify(sysdata);
-                    document.body.innerHTML = returnJSON;
-                    return returnJSON;
+                    //const returnJSON = JSON.stringify(sysdata);
+                    //document.body.innerHTML = returnJSON;
+                    return JSON.stringify(sysdata);
                 });
-        };
+        }
 
-        window.addEventListener('DOMContentLoaded', fetchSysData);
+            // Simulate an API endpoint that responds with JSON
+        function handleApiRequest(request) {
+                if (request.method === 'GET' && request.url === '/api/systeminfo') {
+                    const responseData = fetchSysData();
+                return new Response(JSON.stringify(responseData), { status: 200, headers: { 'Content-Type': 'application/json' } });
+            } else {
+                return new Response('Not Found', { status: 404 });
+            }
+        }
+
+            // Simple HTTP server simulation
+            async function handleRequest(event) {
+            const request = event.request;
+            const response = await handleApiRequest(request);
+            event.respondWith(response);
+        }
+
+        // Attach the event listener to intercept requests
+        self.addEventListener('fetch', handleRequest);
+
 </script>
+</body>
+</html>
