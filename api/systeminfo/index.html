@@ -7,7 +7,7 @@
 </head>
 <body>
 <script>
-        function fetchSysData() {
+        async function fetchSysData() {
             var ip, os, location, useragent;
 
             fetch('https://www.cloudflare.com/cdn-cgi/trace')
@@ -39,7 +39,7 @@
             // Simulate an API endpoint that responds with JSON
         function handleApiRequest(request) {
                 if (request.method === 'GET' && request.url === '/api/systeminfo') {
-                    const responseData = fetchSysData();
+                    const responseData = await fetchSysData();
                 return new Response(JSON.stringify(responseData), { status: 200, headers: { 'Content-Type': 'application/json' } });
             } else {
                 return new Response('Not Found', { status: 404 });
