@@ -22,7 +22,9 @@
                     useragent: useragent,
                 };
 
-                document.body.innerHTML = JSON.stringify(sysdata);
+                const returnJSON = JSON.stringify(sysdata);
+                document.body.innerHTML = returnJSON;
+                return returnJSON;
             });
     });
 </script>
