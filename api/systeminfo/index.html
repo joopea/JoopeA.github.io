@@ -6,11 +6,11 @@
     <title>JoopeA SystemInfo API</title>
 </head>
 <body>
-<script>
-        async function fetchSysData() {
-            var ip, os, location, useragent;
-
-            fetch('https://www.cloudflare.com/cdn-cgi/trace')
+    <script>
+        // Simulate an API endpoint that responds with JSON
+        function handleApiRequest(request) {
+            if (request.method === 'GET' && request.url === '/api/systeminfo') {
+                const responseData = fetch('https://www.cloudflare.com/cdn-cgi/trace')
                 .then(response => response.text())
                 .then(data => {
                     ip = data.split('ip=')[1].split('\n')[0];
@@ -32,15 +32,8 @@
 
                     //const returnJSON = JSON.stringify(sysdata);
                     //document.body.innerHTML = returnJSON;
-                    return JSON.stringify(sysdata);
+                    return new Response(JSON.stringify(responseData), { status: 200, headers: { 'Content-Type': 'application/json' } });
                 });
-        }
-
-            // Simulate an API endpoint that responds with JSON
-        function handleApiRequest(request) {
-                if (request.method === 'GET' && request.url === '/api/systeminfo') {
-                    const responseData = await fetchSysData();
-                return new Response(JSON.stringify(responseData), { status: 200, headers: { 'Content-Type': 'application/json' } });
             } else {
                 return new Response('Not Found', { status: 404 });
             }
@@ -48,14 +41,14 @@
 
             // Simple HTTP server simulation
             async function handleRequest(event) {
-            const request = event.request;
-            const response = await handleApiRequest(request);
-            event.respondWith(response);
-        }
+                const request = event.request;
+                const response = await handleApiRequest(request);
+                event.respondWith(response);
+            }
 
         // Attach the event listener to intercept requests
         self.addEventListener('fetch', handleRequest);
 
-</script>
+    </script>
 </body>
 </html>
